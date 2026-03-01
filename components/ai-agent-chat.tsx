@@ -50,7 +50,7 @@ export function AIAgentChat() {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+      <div className="flex-1 p-4 overflow-y-auto custom-scrollbar" ref={scrollRef}>
         <div className="space-y-4">
           {messages.length === 0 && (
             <div className="text-center text-zinc-500 text-xs my-8 space-y-2">
@@ -98,7 +98,7 @@ export function AIAgentChat() {
             </div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
       <div className="p-4 bg-zinc-900 border-t border-zinc-800">
         <form onSubmit={handleSubmit} className="flex gap-2 relative">

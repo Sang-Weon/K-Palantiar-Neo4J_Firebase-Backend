@@ -571,7 +571,7 @@ export function OntologyWizardDialog({ open, onOpenChange, onComplete }: Ontolog
         </DialogHeader>
 
         {/* 채팅 영역 */}
-        <ScrollArea className="flex-1 px-5 py-4" ref={scrollRef as any}>
+        <div className="flex-1 px-5 py-4 overflow-y-auto custom-scrollbar" ref={scrollRef as any}>
           <div className="space-y-3">
             {chatMessages.map((msg, idx) => (
               <div key={idx} className={`flex gap-2.5 ${msg.role === "user" ? "flex-row-reverse" : "flex-row"}`}>
@@ -634,7 +634,7 @@ export function OntologyWizardDialog({ open, onOpenChange, onComplete }: Ontolog
               </div>
             )}
           </div>
-        </ScrollArea>
+        </div>
 
         {/* 입력 영역 */}
         {!isTyping && (
