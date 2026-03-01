@@ -1,26 +1,36 @@
 "use client"
 
 import { useChat } from '@ai-sdk/react'
-import type { Message } from 'ai'
+import type { UIMessage } from 'ai'
+import { DefaultChatTransport } from 'ai'
 import { useState, useRef, useEffect } from 'react'
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Bot, Send, User, ChevronDown, X, Sparkles, Database } from "lucide-react"
+import { Bot, Send, User, ChevronDown, Sparkles, Database } from "lucide-react"
 
 export function AIAgentChat() {
   const [isOpen, setIsOpen] = useState(false)
-  const { messages, input, handleInputChange, handleSubmit, isLoading } = useChat({
-    api: '/api/agent',
+  const [input, setInput] = useState('')
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({ api: '/api/agent' }),
   })
   const scrollRef = useRef<HTMLDivElement>(null)
+  const isLoading = status === 'submitted' || status === 'streaming'
 
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight
     }
   }, [messages])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    const text = input.trim()
+    if (!text || isLoading) return
+    setInput('')
+    await sendMessage({ text })
+  }
 
   if (!isOpen) {
     return (
@@ -59,32 +69,45 @@ export function AIAgentChat() {
               <p className="text-[10px]">예: "베트남 1공장의 현재 상태를 알려줘"</p>
             </div>
           )}
-          
-          {messages.map((m: Message) => (
-            <div key={m.id} className={`flex gap-3 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
-               <div className={`p-2 rounded-md flex-shrink-0 h-8 w-8 flex items-center justify-center ${
-                 m.role === 'user' ? 'bg-blue-600' : 'bg-purple-600'
-               }`}>
-                 {m.role === 'user' ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
-               </div>
-               <div className={`text-sm px-4 py-2 rounded-2xl max-w-[80%] whitespace-pre-wrap ${
-                 m.role === 'user' 
-                   ? 'bg-blue-600/20 text-blue-100 rounded-tr-none border border-blue-500/30' 
-                   : 'bg-zinc-800 text-zinc-300 rounded-tl-none border border-zinc-700'
-               }`}>
-                 {m.content}
-                 {m.toolInvocations && m.toolInvocations.map((tool: any) => (
-                    <div key={tool.toolCallId} className="mt-2 text-[10px] bg-black/50 p-2 rounded border border-purple-500/30 font-mono text-purple-300">
+
+          {messages.map((m: UIMessage) => {
+            const textContent = m.parts
+              .filter((p: any) => p.type === 'text')
+              .map((p: any) => p.text)
+              .join('')
+            const toolParts = m.parts.filter((p: any) =>
+              p.type === 'dynamic-tool' || (typeof p.type === 'string' && p.type.startsWith('tool-'))
+            )
+            return (
+              <div key={m.id} className={`flex gap-3 ${m.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                <div className={`p-2 rounded-md flex-shrink-0 h-8 w-8 flex items-center justify-center ${
+                  m.role === 'user' ? 'bg-blue-600' : 'bg-purple-600'
+                }`}>
+                  {m.role === 'user' ? <User className="w-4 h-4 text-white" /> : <Bot className="w-4 h-4 text-white" />}
+                </div>
+                <div className={`text-sm px-4 py-2 rounded-2xl max-w-[80%] whitespace-pre-wrap ${
+                  m.role === 'user'
+                    ? 'bg-blue-600/20 text-blue-100 rounded-tr-none border border-blue-500/30'
+                    : 'bg-zinc-800 text-zinc-300 rounded-tl-none border border-zinc-700'
+                }`}>
+                  {textContent}
+                  {toolParts.map((part: any, idx: number) => (
+                    <div key={idx} className="mt-2 text-[10px] bg-black/50 p-2 rounded border border-purple-500/30 font-mono text-purple-300">
                       <div className="flex items-center gap-1 mb-1">
                         <Database className="w-3 h-3" />
                         <span>Neo4j Graph Query Executing...</span>
                       </div>
-                      <div className="opacity-70 truncate">{tool.args.cypher}</div>
+                      <div className="opacity-70 truncate">
+                        {typeof part.input === 'object' && part.input !== null
+                          ? (part.input as any).cypher ?? JSON.stringify(part.input)
+                          : String(part.input ?? '')}
+                      </div>
                     </div>
-                 ))}
-               </div>
-            </div>
-          ))}
+                  ))}
+                </div>
+              </div>
+            )
+          })}
           {isLoading && (
             <div className="flex gap-3">
                <div className="p-2 rounded-md flex-shrink-0 h-8 w-8 flex items-center justify-center bg-purple-600">
@@ -102,16 +125,16 @@ export function AIAgentChat() {
 
       <div className="p-4 bg-zinc-900 border-t border-zinc-800">
         <form onSubmit={handleSubmit} className="flex gap-2 relative">
-          <Input 
+          <Input
             value={input}
-            onChange={handleInputChange}
-            placeholder="Neo4j 그래프에게 물어보세요..." 
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Neo4j 그래프에게 물어보세요..."
             className="bg-black border-zinc-700 pr-10"
             disabled={isLoading}
           />
-          <Button 
-            type="submit" 
-            size="icon" 
+          <Button
+            type="submit"
+            size="icon"
             disabled={isLoading || !input.trim()}
             className="absolute right-1 top-1 h-8 w-8 bg-purple-600 hover:bg-purple-700"
           >

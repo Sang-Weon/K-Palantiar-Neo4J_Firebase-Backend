@@ -6,12 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import { Progress } from "@/components/ui/progress"
 import {
   Bot, User, ChevronRight, CheckCircle2, Loader2, Sparkles,
-  Database, LinkIcon, Tag, Building2, Factory, Cpu, Package,
-  BarChart3, Truck, Lightbulb, RotateCcw
+  Database, LinkIcon, Tag
 } from "lucide-react"
 import { OntologyService } from "@/lib/ontology-service"
 import { useToast } from "@/hooks/use-toast"
@@ -501,9 +499,10 @@ export function OntologyWizardDialog({ open, onOpenChange, onComplete }: Ontolog
   }
 
   // 다음 단계로 이동
-  const goNextStep = (currentAnswers: Partial<Answers>) => {
+  const goNextStep = (_currentAnswers: Partial<Answers>) => {
     const nextIdx = currentStepIdx + 1
     if (nextIdx >= STEP_ORDER.length) return
+    setIsTyping(true) // 옵션이 메시지보다 먼저 보이는 현상 방지
     setCurrentStepIdx(nextIdx)
     const nextStep = STEPS.find(s => s.id === STEP_ORDER[nextIdx])!
     setTimeout(() => pushMessages(nextStep.messages, nextStep.id), 300)
