@@ -5,12 +5,15 @@ import { OntologySidebar } from "@/components/ontology-sidebar"
 import { GlobalMap } from "@/components/global-map"
 import { ScenarioPanel } from "@/components/scenario-panel"
 import { QualityDefenseDashboard } from "@/components/quality-defense-dashboard"
+import { QualityScenarioPanel } from "@/components/quality-scenario-panel"
+import { LogisticsScenarioPanel } from "@/components/logistics-scenario-panel"
 import { MDMDashboard } from "@/components/mdm-dashboard"
-import { SimulationScenarioBuilder } from "@/components/simulation-scenario-builder"
 import { OntologyGraphViewer } from "@/components/ontology-graph-viewer"
 import { FeedbackLoopViewer } from "@/components/feedback-loop-viewer"
 import { OntologyConfigManager } from "@/components/ontology-config-manager"
 import { DemandForecastDashboard } from "@/components/demand-forecast-dashboard"
+import { WritebackTrackingDashboard } from "@/components/writeback-tracking-dashboard"
+import { LogisticsOptimizationDashboard } from "@/components/logistics-optimization-dashboard"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -67,13 +70,17 @@ export default function Page() {
 
           {selectedMenu === "품질관리 및 수율 최적화" && <QualityDefenseDashboard />}
 
-          {selectedMenu === "생산 최적화 시뮬레이션" && <SimulationScenarioBuilder />}
-
           {selectedMenu === "수요 예측 및 최적대응" && <DemandForecastDashboard />}
+
+          {selectedMenu === "물류 최적화" && <LogisticsOptimizationDashboard />}
+
+          {selectedMenu === "Write-Back 대시보드" && <WritebackTrackingDashboard />}
         </div>
 
         {/* 우측 시나리오 패널 */}
         {selectedMenu === "수요 예측 및 최적대응" && <ScenarioPanel onExecute={handleExecuteOption} />}
+        {selectedMenu === "품질관리 및 수율 최적화" && <QualityScenarioPanel onExecute={handleExecuteOption} />}
+        {selectedMenu === "물류 최적화" && <LogisticsScenarioPanel onExecute={handleExecuteOption} />}
       </div>
 
       <Toaster />

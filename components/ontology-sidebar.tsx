@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { LayoutDashboard, Network, Database, TrendingUp, Shield, FlaskConical, Briefcase } from "lucide-react"
+import { LayoutDashboard, Network, Database, TrendingUp, Shield, Truck, Activity, Briefcase } from "lucide-react"
 
 interface OntologySidebarProps {
   selectedMenu: string
@@ -15,7 +15,8 @@ const menuItems = [
   { id: "데이터 정제 기준정보 관리", icon: Database, label: "데이터 정제 기준정보 관리 (MDM)" },
   { id: "수요 예측 및 최적대응", icon: TrendingUp, label: "수요 예측 및 최적대응 시나리오" },
   { id: "품질관리 및 수율 최적화", icon: Shield, label: "품질관리 및 수율 최적화 조치" },
-  { id: "생산 최적화 시뮬레이션", icon: FlaskConical, label: "생산 최적화 시뮬레이션 엔진" },
+  { id: "물류 최적화", icon: Truck, label: "대외변수 대응 물류 최적화" },
+  { id: "Write-Back 대시보드", icon: Activity, label: "Write-Back 변동 추적" },
 ]
 
 export function OntologySidebar({ selectedMenu, onMenuSelect }: OntologySidebarProps) {
