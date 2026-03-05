@@ -10,6 +10,7 @@ import { SimulationScenarioBuilder } from "@/components/simulation-scenario-buil
 import { OntologyGraphViewer } from "@/components/ontology-graph-viewer"
 import { FeedbackLoopViewer } from "@/components/feedback-loop-viewer"
 import { OntologyConfigManager } from "@/components/ontology-config-manager"
+import { DemandForecastDashboard } from "@/components/demand-forecast-dashboard"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -20,8 +21,8 @@ export default function Page() {
 
   const handleExecuteOption = (option: string) => {
     toast({
-      title: "시나리오 실행",
-      description: `${option}이(가) 실행되었습니다. 시스템을 업데이트하는 중...`,
+      title: "시나리오 실행 완료",
+      description: `${option}이(가) 성공적으로 실행되었습니다. 레거시 시스템(ERP, MES, QMS)에 반영되었습니다.`,
     })
   }
 
@@ -67,6 +68,8 @@ export default function Page() {
           {selectedMenu === "품질관리 및 수율 최적화" && <QualityDefenseDashboard />}
 
           {selectedMenu === "생산 최적화 시뮬레이션" && <SimulationScenarioBuilder />}
+
+          {selectedMenu === "수요 예측 및 최적대응" && <DemandForecastDashboard />}
         </div>
 
         {/* 우측 시나리오 패널 */}
