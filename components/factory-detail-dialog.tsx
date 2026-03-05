@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -97,6 +97,7 @@ export function FactoryDetailDialog({ isOpen, onClose, factory }: FactoryDetailD
               {factory.name}
               <Badge variant={factory.status === "critical" ? "destructive" : "default"}>{factory.statusText}</Badge>
             </DialogTitle>
+            <DialogDescription className="sr-only">공장 상세 정보, KPI, 이슈 및 액션 아이템을 관리합니다.</DialogDescription>
           </DialogHeader>
 
           <Tabs defaultValue="overview" className="w-full">

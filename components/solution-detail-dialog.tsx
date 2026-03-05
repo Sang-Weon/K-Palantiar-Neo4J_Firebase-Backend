@@ -1,6 +1,6 @@
 "use client"
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -129,6 +129,7 @@ export function SolutionDetailDialog({ isOpen, onClose, solution }: SolutionDeta
             <Target className="w-6 h-6 text-blue-400" />
             상세 실행 계획
           </DialogTitle>
+          <DialogDescription className="sr-only">해결 방안의 상세 실행 계획 및 담당 부서를 확인합니다.</DialogDescription>
         </DialogHeader>
 
         <ScrollArea className="h-[calc(90vh-100px)] pr-4">

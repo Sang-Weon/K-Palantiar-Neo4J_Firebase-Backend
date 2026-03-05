@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
@@ -55,6 +55,7 @@ export function DataCleansingDialog({ open, onOpenChange, issue }: DataCleansing
             <RefreshCw className="w-6 h-6 text-purple-400" />
             데이터 정제 워크플로우
           </DialogTitle>
+          <DialogDescription className="sr-only">데이터 품질 이슈 분석 및 정제 작업을 수행합니다.</DialogDescription>
           <div className="flex items-center gap-2 mt-2">
             <Badge variant="destructive">{issue.severity.toUpperCase()}</Badge>
             <span className="text-sm text-zinc-400">

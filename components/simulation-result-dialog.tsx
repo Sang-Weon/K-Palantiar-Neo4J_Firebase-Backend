@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
@@ -153,6 +153,7 @@ export function SimulationResultDialog({ open, onOpenChange, config }: Simulatio
             <Zap className="w-6 h-6 text-blue-400" />
             시뮬레이션 결과
           </DialogTitle>
+          <DialogDescription className="sr-only">AI 최적화 시뮬레이션 결과 및 방안을 확인합니다.</DialogDescription>
         </DialogHeader>
 
         {stage === "computing" ? (

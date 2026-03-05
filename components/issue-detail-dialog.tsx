@@ -1,6 +1,6 @@
 "use client"
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -128,6 +128,7 @@ export function IssueDetailDialog({ isOpen, onClose, issue }: IssueDetailDialogP
               <AlertTriangle className="w-6 h-6 text-yellow-400" />
               이슈 상세 분석
             </DialogTitle>
+            <DialogDescription className="sr-only">이슈 상세 정보 및 AI 기반 해결 방안을 확인합니다.</DialogDescription>
           </DialogHeader>
 
           <ScrollArea className="h-[calc(85vh-100px)] pr-4">

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
@@ -99,6 +99,7 @@ export function QualityIssueDialog({ open, onOpenChange, issue }: QualityIssueDi
             <AlertCircle className="w-6 h-6 text-red-400" />
             품질 이슈 워크플로우
           </DialogTitle>
+          <DialogDescription className="sr-only">품질 이슈 상세 정보 및 조치 계획을 관리합니다.</DialogDescription>
           <div className="flex items-center gap-2 mt-2">
             <Badge variant="destructive">{issue.severity.toUpperCase()}</Badge>
             <span className="text-sm text-zinc-400">{issue.id}</span>

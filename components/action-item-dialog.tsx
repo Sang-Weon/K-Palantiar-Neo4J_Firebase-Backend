@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -98,6 +98,7 @@ export function ActionItemDialog({ isOpen, onClose, action }: ActionItemDialogPr
             <ListChecks className="w-6 h-6 text-blue-400" />
             액션 아이템 상세
           </DialogTitle>
+          <DialogDescription className="sr-only">액션 아이템 진행 상황 및 체크리스트를 관리합니다.</DialogDescription>
         </DialogHeader>
 
         <ScrollArea className="h-[calc(85vh-100px)] pr-4">
