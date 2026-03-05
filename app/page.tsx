@@ -9,6 +9,7 @@ import { CascadeDefaultSimulator } from "@/components/cascade-default-simulator"
 import { OntologyGraphViewer } from "@/components/ontology-graph-viewer"
 import { OntologyConfigManager } from "@/components/ontology-config-manager"
 import { FeedbackLoopViewer } from "@/components/feedback-loop-viewer"
+import { InvestmentReportDashboard } from "@/components/investment-report-dashboard"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -61,6 +62,8 @@ export default function Page() {
           {selectedMenu === "리스크/약정 모니터링" && <RiskCovenantMonitor />}
 
           {selectedMenu === "연쇄부도 시뮬레이션" && <CascadeDefaultSimulator />}
+
+          {selectedMenu === "투자 보고서" && <InvestmentReportDashboard />}
         </div>
       </div>
 
