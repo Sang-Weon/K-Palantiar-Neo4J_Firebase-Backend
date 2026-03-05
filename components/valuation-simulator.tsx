@@ -66,7 +66,7 @@ export function ValuationSimulator() {
     } catch (error) {
       toast({
         title: "시뮬레이션 오류",
-        description: "가치평가 시뮬레이션 중 오류가 발생했습니다.",
+        description: error instanceof Error ? error.message : "가치평가 시뮬레이션 중 오류가 발생했습니다.",
         variant: "destructive"
       })
     } finally {
@@ -248,20 +248,20 @@ export function ValuationSimulator() {
                   <div className="bg-zinc-800/50 border border-zinc-700 rounded p-4">
                     <div className="text-xs text-zinc-400 mb-1">공정가치 (Fair Value)</div>
                     <div className="text-3xl font-bold text-emerald-400">
-                      {result.result?.summary?.fairValue?.toFixed(0) || "-"}억
+                      {result?.result?.summary?.fairValue?.toFixed(0) || "-"}억
                     </div>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="bg-zinc-800/50 border border-zinc-700 rounded p-3">
                       <div className="text-xs text-zinc-400 mb-1">IRR</div>
                       <div className="text-xl font-bold text-blue-400">
-                        {result.result?.summary?.irr ? (result.result.summary.irr * 100).toFixed(1) : "-"}%
+                        {result?.result?.summary?.irr ? (result.result.summary.irr * 100).toFixed(1) : "-"}%
                       </div>
                     </div>
                     <div className="bg-zinc-800/50 border border-zinc-700 rounded p-3">
                       <div className="text-xs text-zinc-400 mb-1">NPV</div>
                       <div className="text-xl font-bold text-purple-400">
-                        {result.result?.summary?.npv?.toFixed(0) || "-"}억
+                        {result?.result?.summary?.npv?.toFixed(0) || "-"}억
                       </div>
                     </div>
                   </div>
@@ -269,23 +269,23 @@ export function ValuationSimulator() {
               </Card>
 
               <Card className={`p-4 ${
-                result.result?.summary?.irr >= 0.10 
+                (result?.result?.summary?.irr ?? 0) >= 0.10 
                   ? "bg-emerald-500/10 border-emerald-500/30" 
                   : "bg-amber-500/10 border-amber-500/30"
               }`}>
                 <div className="flex items-start gap-3">
-                  {result.result?.summary?.irr >= 0.10 ? (
+                  {(result?.result?.summary?.irr ?? 0) >= 0.10 ? (
                     <CheckCircle2 className="w-5 h-5 text-emerald-400 mt-0.5" />
                   ) : (
                     <AlertCircle className="w-5 h-5 text-amber-400 mt-0.5" />
                   )}
                   <div className="text-sm">
                     <div className={`font-semibold mb-1 ${
-                      result.result?.summary?.irr >= 0.10 ? "text-emerald-400" : "text-amber-400"
+                      (result?.result?.summary?.irr ?? 0) >= 0.10 ? "text-emerald-400" : "text-amber-400"
                     }`}>
                       AI 투자 의견
                     </div>
-                    <p className="text-zinc-300">{result.recommendation}</p>
+                    <p className="text-zinc-300">{result?.recommendation || "분석 결과를 확인해주세요."}</p>
                   </div>
                 </div>
               </Card>

@@ -21,7 +21,8 @@ import {
   CascadeSimulationResult,
   EarlyWarningAlert,
   TrancheSeniority,
-  CreditRating
+  CreditRating,
+  AlertSeverity
 } from "./asset-pricing-types";
 
 // ═══════════════════════════════════════════════════════════════════
@@ -131,9 +132,14 @@ export const AIPLogic = {
       createdAt: serverTimestamp()
     };
 
-    // Firebase에 저장
-    const docRef = await addDoc(collection(db, "assetSimulations"), scenario);
-    scenario.id = docRef.id;
+    // Firebase에 저장 (실패해도 결과는 반환)
+    try {
+      const docRef = await addDoc(collection(db, "assetSimulations"), scenario);
+      scenario.id = docRef.id;
+    } catch (firebaseError) {
+      console.warn("[AIPLogic] Firebase 저장 실패, 로컬 결과만 반환:", firebaseError);
+      scenario.id = `local-${Date.now()}`;
+    }
 
     return scenario;
   },
