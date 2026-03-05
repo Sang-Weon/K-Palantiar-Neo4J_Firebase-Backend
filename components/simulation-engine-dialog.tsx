@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -12,12 +12,20 @@ import { AIPLogic, SimulationScenario } from "@/lib/aip-logic"
 interface SimulationEngineDialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
-  scenarioName: string
+  selectedOption: string
 }
 
-export function SimulationEngineDialog({ open, onOpenChange, scenarioName }: SimulationEngineDialogProps) {
+export function SimulationEngineDialog({ open, onOpenChange, selectedOption }: SimulationEngineDialogProps) {
   const [isRunning, setIsRunning] = useState(false)
   const [result, setResult] = useState<SimulationScenario | null>(null)
+
+  // 다이얼로그가 열릴 때 상태 초기화
+  useEffect(() => {
+    if (open) {
+      setIsRunning(false)
+      setResult(null)
+    }
+  }, [open])
 
   const handleStartSimulation = async () => {
     setIsRunning(true)
@@ -27,7 +35,7 @@ export function SimulationEngineDialog({ open, onOpenChange, scenarioName }: Sim
       // 3초간 시뮬레이션 애니메이션
       await new Promise(resolve => setTimeout(resolve, 3000));
 
-      const simulationResult = await AIPLogic.simulateScenario(scenarioName, {
+      const simulationResult = await AIPLogic.simulateScenario(selectedOption, {
         timestamp: Date.now(),
         intensity: "high"
       });
@@ -46,7 +54,7 @@ export function SimulationEngineDialog({ open, onOpenChange, scenarioName }: Sim
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-xl">
             <Sparkles className="w-6 h-6 text-purple-400" />
-            AIP 시뮬레이션 엔진: {scenarioName}
+            AIP 시뮬레이션 엔진: {selectedOption}
           </DialogTitle>
           <DialogDescription className="text-zinc-400">
             디지털 트윈 온톨로지를 기반으로 최적의 의사결정 시나리오를 분석합니다.
