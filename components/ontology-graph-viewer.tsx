@@ -9,13 +9,12 @@ import { AIReasoningDialog } from "./ai-reasoning-dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { OntologyService, ObjectType, LinkType } from "@/lib/ontology-service"
 
-// 가시화를 위한 좌표 자동 배치 헬퍼 (드림텍 대규모 그래프 대응)
+// 가시화를 위한 좌표 자동 배치 헬퍼 (대체투자 그래프 대응)
 const getPosition = (index: number, level: number) => {
   const spacingX = 220;
   const spacingY = 160;
   const offsetX = 80;
 
-  // 레벨에 따른 X축 변동 (계단식 배치)
   const x = offsetX + (index % 3) * spacingX + (level % 2 === 0 ? 50 : 0);
   const y = level * spacingY + (index > 2 ? 40 : 0);
 
@@ -29,7 +28,7 @@ export function OntologyGraphViewer() {
 
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null)
   const [showAIReasoning, setShowAIReasoning] = useState(false)
-  const [zoomLevel, setZoomLevel] = useState(0.7) // 복합 그래프를 위해 초기 줌 축소
+  const [zoomLevel, setZoomLevel] = useState(0.7)
 
   useEffect(() => {
     setIsLoading(true)
@@ -47,13 +46,14 @@ export function OntologyGraphViewer() {
 
   const getLevel = (typeName: string) => {
     const name = typeName.toLowerCase();
-    if (name.includes("hq")) return 0;
-    if (name.includes("subsidiary") || name.includes("site")) return 1;
-    if (name.includes("line")) return 2;
-    if (name.includes("equipment") || name.includes("inspection")) return 2.5;
-    if (name.includes("component") || name.includes("material")) return 3;
-    if (name.includes("module")) return 4;
-    if (name.includes("product") || name.includes("customer") || name.includes("factory")) return 5;
+    if (name.includes("fund") || name.includes("펀드")) return 0;
+    if (name.includes("company") || name.includes("회사") || name.includes("gp") || name.includes("lp")) return 1;
+    if (name.includes("project") || name.includes("프로젝트") || name.includes("사업")) return 2;
+    if (name.includes("tranche") || name.includes("트랜치")) return 2.5;
+    if (name.includes("collateral") || name.includes("담보")) return 3;
+    if (name.includes("covenant") || name.includes("약정")) return 3.5;
+    if (name.includes("cashflow") || name.includes("현금흐름")) return 4;
+    if (name.includes("valuation") || name.includes("평가")) return 5;
     return 3;
   };
 
@@ -63,7 +63,7 @@ export function OntologyGraphViewer() {
     return {
       id: obj.name,
       type: obj.name,
-      name: obj.name.replace(/_/g, "\n"), // 가시성을 위해 줄바꿈 처리
+      name: obj.name.replace(/_/g, "\n"),
       ...getPosition(index, level),
       level: level,
       status: "정상",
@@ -83,14 +83,15 @@ export function OntologyGraphViewer() {
 
   const getNodeColor = (typeName: string) => {
     const name = typeName.toLowerCase();
-    if (name.includes("hq")) return "bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.3)]";
-    if (name.includes("subsidiary")) return "bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.3)]";
-    if (name.includes("line")) return "bg-amber-500";
-    if (name.includes("equipment")) return "bg-yellow-500";
-    if (name.includes("component")) return "bg-purple-500";
-    if (name.includes("module")) return "bg-emerald-500";
-    if (name.includes("product")) return "bg-blue-500";
-    if (name.includes("factory") || name.includes("customer")) return "bg-indigo-600";
+    if (name.includes("fund") || name.includes("펀드")) return "bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.3)]";
+    if (name.includes("company") || name.includes("회사") || name.includes("gp")) return "bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]";
+    if (name.includes("project") || name.includes("프로젝트")) return "bg-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)]";
+    if (name.includes("tranche") || name.includes("트랜치")) return "bg-amber-500";
+    if (name.includes("collateral") || name.includes("담보")) return "bg-cyan-500";
+    if (name.includes("covenant") || name.includes("약정")) return "bg-rose-500";
+    if (name.includes("cashflow") || name.includes("현금흐름")) return "bg-green-500";
+    if (name.includes("valuation") || name.includes("평가")) return "bg-purple-500";
+    if (name.includes("lp")) return "bg-orange-500";
     return "bg-zinc-500";
   }
 
@@ -105,15 +106,15 @@ export function OntologyGraphViewer() {
               <Network className="w-6 h-6 text-blue-400" />
             </div>
             <div className="space-y-1">
-              <h2 className="text-xl font-bold">Dreamtech Mobile Ontology Graph</h2>
-              <p className="text-xs text-zinc-500">실시간 Firebase 동기화 기반 지식 그래프</p>
+              <h2 className="text-xl font-bold">이지자산평가 대체투자 온톨로지</h2>
+              <p className="text-xs text-zinc-500">실시간 Firebase 동기화 기반 자산 지식 그래프</p>
             </div>
           </div>
           <div className="flex items-center gap-2">
             {isLoading && <Loader2 className="w-4 h-4 animate-spin text-blue-400" />}
             <Button size="sm" variant="outline" className="border-zinc-700 bg-zinc-800/50" onClick={() => setShowAIReasoning(true)}>
               <Eye className="w-4 h-4 mr-1" />
-              AI 추론 엔진 실행
+              AI 가치평가 추론
             </Button>
           </div>
         </div>
@@ -131,13 +132,16 @@ export function OntologyGraphViewer() {
           <div className="h-4 w-[1px] bg-zinc-800" />
           <div className="flex gap-4">
             <div className="flex items-center gap-2 text-[10px] text-zinc-500">
-              <div className="w-2 h-2 bg-blue-500 rounded-full" /> 생산거점
+              <div className="w-2 h-2 bg-indigo-500 rounded-full" /> 펀드
             </div>
             <div className="flex items-center gap-2 text-[10px] text-zinc-500">
-              <div className="w-2 h-2 bg-orange-500 rounded-full" /> 생산공정
+              <div className="w-2 h-2 bg-emerald-500 rounded-full" /> 프로젝트
             </div>
             <div className="flex items-center gap-2 text-[10px] text-zinc-500">
-              <div className="w-2 h-2 bg-purple-500 rounded-full" /> 부력재료
+              <div className="w-2 h-2 bg-amber-500 rounded-full" /> 트랜치
+            </div>
+            <div className="flex items-center gap-2 text-[10px] text-zinc-500">
+              <div className="w-2 h-2 bg-rose-500 rounded-full" /> 약정
             </div>
           </div>
         </div>
@@ -146,7 +150,7 @@ export function OntologyGraphViewer() {
           {nodes.length === 0 && !isLoading && (
             <div className="absolute inset-0 flex flex-col items-center justify-center space-y-3">
               <Database className="w-12 h-12 text-zinc-800" />
-              <p className="text-zinc-500 text-sm italic">매핑된 데이터가 없습니다. AI 자동 매핑을 먼저 실행해 주세요.</p>
+              <p className="text-zinc-500 text-sm italic">매핑된 데이터가 없습니다. 온톨로지 위자드를 먼저 실행해 주세요.</p>
             </div>
           )}
 
@@ -217,7 +221,7 @@ export function OntologyGraphViewer() {
               <div className="md:col-span-2">
                 <p className="text-xs text-zinc-400 leading-relaxed mb-4">{selectedNode.description}</p>
                 <div className="flex gap-2">
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-[11px] h-7">상세 지표 분석</Button>
+                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-[11px] h-7">가치평가 분석</Button>
                   <Button size="sm" variant="outline" className="bg-transparent border-zinc-700 text-[11px] h-7">연관 관계 탐색</Button>
                 </div>
               </div>
