@@ -207,7 +207,7 @@ const WIZARD_STEPS: Step[] = [
       { value: "completion", label: "공정률 약정", desc: "공사 진행률 달성 의무", icon: "construction" },
       { value: "presale", label: "분양률 약정", desc: "분양 목표 달성 의무", icon: "home" },
       { value: "occupancy", label: "임대율 약정", desc: "임대 목표 달성 의무", icon: "key" },
-      { value: "cash_trap", label: "Cash Trap", desc: "현금 유보 조건 트리거", icon: "lock" },
+      { value: "cash_trap", label: "Cash Trap", desc: "현금 유보 조건 트���거", icon: "lock" },
       { value: "rating", label: "신용등급 유지", desc: "차주/보증인 신용등급 유지 의무", icon: "star" },
     ]
   },
@@ -711,77 +711,85 @@ export function OntologyWizardDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-zinc-900 border-zinc-800 max-w-3xl max-h-[90vh] flex flex-col">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lg">
-            <Sparkles className="w-5 h-5 text-purple-400" />
-            이지자산평가 온톨로지 구성 위자드
-          </DialogTitle>
-          <DialogDescription>
-            대체투자 자산평가에 최적화된 그래프 구조를 자동으로 생성합니다.
-          </DialogDescription>
-        </DialogHeader>
-
-        <div className="flex items-center gap-4 py-2">
-          <Progress value={progress} className="flex-1 h-2 [&>div]:bg-purple-500" />
-          <Badge variant="outline" className="text-purple-400 border-purple-400/50">
-            {stepIndex + 1} / {stepSequence.length}
-          </Badge>
+      <DialogContent className="bg-zinc-900 border-zinc-800 max-w-4xl w-[95vw] h-[85vh] flex flex-col p-0 gap-0 overflow-hidden">
+        {/* 고정 헤더 */}
+        <div className="px-6 pt-6 pb-4 border-b border-zinc-800 shrink-0">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-lg">
+              <Sparkles className="w-5 h-5 text-purple-400" />
+              이지자산평가 온톨로지 구성 위자드
+            </DialogTitle>
+            <DialogDescription>
+              대체투자 자산평가에 최적화된 그래프 구조를 자동으로 생성합니다.
+            </DialogDescription>
+          </DialogHeader>
+          
+          {/* 진행 상태 바 */}
+          <div className="flex items-center gap-4 mt-4">
+            <Progress value={progress} className="flex-1 h-2 [&>div]:bg-purple-500" />
+            <Badge variant="outline" className="text-purple-400 border-purple-400/50 shrink-0">
+              {stepIndex + 1} / {stepSequence.length}
+            </Badge>
+          </div>
         </div>
 
-        <ScrollArea ref={scrollRef} className="flex-1 pr-4 min-h-[300px] max-h-[400px]">
-          <div className="space-y-4 pb-4">
-            {messages.map((msg, idx) => (
-              <div key={idx} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}>
-                {msg.role === "bot" && (
-                  <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
-                    <Bot className="w-4 h-4 text-purple-400" />
+        {/* 스크롤 가능한 대화 영역 */}
+        <div className="flex-1 overflow-hidden px-6">
+          <ScrollArea ref={scrollRef} className="h-full py-4">
+            <div className="space-y-4 pb-4">
+              {messages.map((msg, idx) => (
+                <div key={idx} className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}>
+                  {msg.role === "bot" && (
+                    <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center shrink-0">
+                      <Bot className="w-4 h-4 text-purple-400" />
+                    </div>
+                  )}
+                  <div className={`max-w-[75%] p-3 rounded-lg ${
+                    msg.role === "bot" 
+                      ? "bg-zinc-800 text-zinc-100" 
+                      : "bg-purple-600 text-white"
+                  }`}>
+                    {msg.text}
                   </div>
-                )}
-                <div className={`max-w-[80%] p-3 rounded-lg ${
-                  msg.role === "bot" 
-                    ? "bg-zinc-800 text-zinc-100" 
-                    : "bg-purple-600 text-white"
-                }`}>
-                  {msg.text}
+                  {msg.role === "user" && (
+                    <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center shrink-0">
+                      <User className="w-4 h-4 text-zinc-300" />
+                    </div>
+                  )}
                 </div>
-                {msg.role === "user" && (
-                  <div className="w-8 h-8 rounded-full bg-zinc-700 flex items-center justify-center shrink-0">
-                    <User className="w-4 h-4 text-zinc-300" />
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
 
-        {/* 선택 옵션 영역 */}
-        <div className="border-t border-zinc-800 pt-4 space-y-4">
+        {/* 고정 하단 - 선택 옵션 영역 */}
+        <div className="shrink-0 border-t border-zinc-800 bg-zinc-900/95 backdrop-blur px-6 py-4 space-y-4">
+          {/* Review 단계 - 생성될 온톨로지 요약 */}
           {currentStep?.id === "review" && generatedOntology ? (
-            <Card className="bg-zinc-800/50 p-4 max-h-[200px] overflow-y-auto">
+            <Card className="bg-zinc-800/50 border-zinc-700 p-4">
               <h4 className="font-semibold text-sm mb-3 flex items-center gap-2">
                 <Database className="w-4 h-4 text-blue-400" />
                 생성될 온톨로지 구조
               </h4>
               <div className="grid grid-cols-3 gap-4 text-sm">
-                <div>
-                  <div className="text-zinc-400 mb-1">객체 (Nodes)</div>
-                  <div className="text-xl font-bold text-emerald-400">{generatedOntology.objects.length}개</div>
-                  <div className="text-xs text-zinc-500 mt-1">
+                <div className="bg-zinc-900/50 rounded-lg p-3">
+                  <div className="text-zinc-400 text-xs mb-1">객체 (Nodes)</div>
+                  <div className="text-2xl font-bold text-emerald-400">{generatedOntology.objects.length}개</div>
+                  <div className="text-[10px] text-zinc-500 mt-1 line-clamp-1">
                     {generatedOntology.objects.slice(0, 3).map(o => o.name).join(", ")}...
                   </div>
                 </div>
-                <div>
-                  <div className="text-zinc-400 mb-1">관계 (Links)</div>
-                  <div className="text-xl font-bold text-blue-400">{generatedOntology.links.length}개</div>
-                  <div className="text-xs text-zinc-500 mt-1">
+                <div className="bg-zinc-900/50 rounded-lg p-3">
+                  <div className="text-zinc-400 text-xs mb-1">관계 (Links)</div>
+                  <div className="text-2xl font-bold text-blue-400">{generatedOntology.links.length}개</div>
+                  <div className="text-[10px] text-zinc-500 mt-1 line-clamp-1">
                     {generatedOntology.links.slice(0, 2).map(l => l.name).join(", ")}...
                   </div>
                 </div>
-                <div>
-                  <div className="text-zinc-400 mb-1">속성 (Props)</div>
-                  <div className="text-xl font-bold text-purple-400">{generatedOntology.props.length}개</div>
-                  <div className="text-xs text-zinc-500 mt-1">
+                <div className="bg-zinc-900/50 rounded-lg p-3">
+                  <div className="text-zinc-400 text-xs mb-1">속성 (Props)</div>
+                  <div className="text-2xl font-bold text-purple-400">{generatedOntology.props.length}개</div>
+                  <div className="text-[10px] text-zinc-500 mt-1 line-clamp-1">
                     {generatedOntology.props.slice(0, 2).map(p => p.name).join(", ")}...
                   </div>
                 </div>
@@ -789,67 +797,76 @@ export function OntologyWizardDialog({ open, onOpenChange }: Props) {
             </Card>
           ) : null}
 
+          {/* Single 선택 옵션 */}
           {currentStep?.type === "single" && currentStep.options && (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-2 gap-3">
               {currentStep.options.map((opt) => (
                 <button
                   key={opt.value}
                   onClick={() => handleOptionSelect(opt.value)}
                   disabled={isGenerating}
-                  className="flex items-start gap-3 p-3 rounded-lg border border-zinc-700 bg-zinc-800/50 hover:bg-zinc-800 hover:border-zinc-600 transition-all text-left disabled:opacity-50"
+                  className="flex items-start gap-3 p-4 rounded-lg border border-zinc-700 bg-zinc-800/50 hover:bg-zinc-800 hover:border-purple-500/50 transition-all text-left disabled:opacity-50 group"
                 >
-                  <ChevronRight className="w-4 h-4 text-purple-400 mt-0.5 shrink-0" />
-                  <div>
+                  <ChevronRight className="w-4 h-4 text-purple-400 mt-0.5 shrink-0 group-hover:translate-x-0.5 transition-transform" />
+                  <div className="min-w-0">
                     <div className="font-medium text-sm">{opt.label}</div>
-                    {opt.desc && <div className="text-xs text-zinc-400 mt-1">{opt.desc}</div>}
+                    {opt.desc && <div className="text-xs text-zinc-400 mt-1 line-clamp-2">{opt.desc}</div>}
                   </div>
                 </button>
               ))}
             </div>
           )}
 
+          {/* Multi 선택 옵션 */}
           {currentStep?.type === "multi" && currentStep.options && (
-            <>
-              <div className="grid grid-cols-2 gap-2 max-h-[200px] overflow-y-auto pr-2">
-                {currentStep.options.map((opt) => {
-                  const isSelected = selectedMulti.includes(opt.value)
-                  return (
-                    <button
-                      key={opt.value}
-                      onClick={() => handleOptionSelect(opt.value)}
-                      className={`flex items-start gap-3 p-3 rounded-lg border transition-all text-left ${
-                        isSelected 
-                          ? "border-purple-500 bg-purple-500/20" 
-                          : "border-zinc-700 bg-zinc-800/50 hover:border-zinc-600"
-                      }`}
-                    >
-                      <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 ${
-                        isSelected ? "bg-purple-500 border-purple-500" : "border-zinc-600"
-                      }`}>
-                        {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
-                      </div>
-                      <div>
-                        <div className="font-medium text-sm">{opt.label}</div>
-                        {opt.desc && <div className="text-xs text-zinc-400 mt-1">{opt.desc}</div>}
-                      </div>
-                    </button>
-                  )
-                })}
-              </div>
-              <div className="flex items-center justify-between">
+            <div className="space-y-3">
+              <ScrollArea className="h-[180px]">
+                <div className="grid grid-cols-2 gap-2 pr-4">
+                  {currentStep.options.map((opt) => {
+                    const isSelected = selectedMulti.includes(opt.value)
+                    return (
+                      <button
+                        key={opt.value}
+                        onClick={() => handleOptionSelect(opt.value)}
+                        className={`flex items-start gap-3 p-3 rounded-lg border transition-all text-left ${
+                          isSelected 
+                            ? "border-purple-500 bg-purple-500/20" 
+                            : "border-zinc-700 bg-zinc-800/50 hover:border-zinc-600"
+                        }`}
+                      >
+                        <div className={`w-5 h-5 rounded border flex items-center justify-center shrink-0 mt-0.5 ${
+                          isSelected ? "bg-purple-500 border-purple-500" : "border-zinc-600"
+                        }`}>
+                          {isSelected && <CheckCircle2 className="w-3 h-3 text-white" />}
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-medium text-sm">{opt.label}</div>
+                          {opt.desc && <div className="text-xs text-zinc-400 mt-1 line-clamp-2">{opt.desc}</div>}
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </ScrollArea>
+              <div className="flex items-center justify-between pt-2 border-t border-zinc-800">
                 <Badge variant="outline" className="text-zinc-400">
-                  {selectedMulti.length}개 선택됨
+                  {selectedMulti.length}개 선택됨 {currentStep.minSelect && `(최소 ${currentStep.minSelect}개)`}
                 </Badge>
-                <Button onClick={handleMultiConfirm} disabled={currentStep.minSelect ? selectedMulti.length < currentStep.minSelect : false}>
+                <Button 
+                  onClick={handleMultiConfirm} 
+                  disabled={currentStep.minSelect ? selectedMulti.length < currentStep.minSelect : false}
+                  className="bg-purple-600 hover:bg-purple-700"
+                >
                   다음 단계
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
-            </>
+            </div>
           )}
 
+          {/* 생성 중 로딩 */}
           {isGenerating && (
-            <div className="flex items-center justify-center py-4 gap-3">
+            <div className="flex items-center justify-center py-6 gap-3">
               <Loader2 className="w-5 h-5 animate-spin text-purple-400" />
               <span className="text-sm text-zinc-400">온톨로지 생성 중...</span>
             </div>
