@@ -7,7 +7,7 @@
 
 ## 개요 (Overview)
 
-본 프로젝트는 단순한 디지털 트윈을 넘어, 기업의 데이터를 지능형 객체로 모델링하는 **온톨로지(Ontology)** 계층, 레거시 시스템(SAP, MES 등)과의 실시간 연동을 위한 **Write Back**, 그리고 AI 기반의 의사결정을 지원하는 **AIP(Artificial Intelligence Platform)** 기능이 통합된 차세대 산업 솔루션입니다.
+본 프로젝트는 AI를 활용하여 대체자산 평가 및 제반 정보를 제공하는 솔루션으로 GP및 LP들의 데이터를 지능형 객체로 모델링하는 **온톨로지(Ontology)** 계층, 레거시 시스템과의 실시간 연동을 위한 **Write Back**, 그리고 AI 기반의 의사결정을 지원하는 **AIP(Artificial Intelligence Platform)** 기능이 통합된 차세대 산업 솔루션입니다.
 
 ## 핵심 기능 (Core Features)
 
@@ -18,7 +18,7 @@
 
 ## 시작 방법 (Getting Started)
 
-1. **URL 접속**: [https://k-palantir-ontology-99.web.app](https://k-palantir-ontology-99.web.app)
+1. **URL 접속**: (https://v0-eg-alternative-asset-pricing-250309-3fyqi356u.vercel.app/)
 2. **온톨로지 구성**: `온톨로지 구성 관리` 탭에서 `AI 자동 매핑`을 실행하여 초기 데이터를 구축하세요.
 3. **Write Back 체험**: 분석 패널에서 시뮬레이션 기반 의의사결정을 수행하고 레거시 시스템 반영 로그를 확인하세요.
 
