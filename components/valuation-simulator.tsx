@@ -12,7 +12,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { 
   Play, Calculator, TrendingUp, AlertCircle, CheckCircle2, Settings2, Database,
@@ -123,7 +122,7 @@ const VALIDATED_METHODOLOGIES: ValuationMethodology[] = [
     description: "안정화된 순영업이익(NOI)을 시장 자본환원율(Cap Rate)로 나누어 부동산 가치를 산정하는 소득접근법입니다.",
     applicableAssets: ["REAL_ESTATE", "INFRASTRUCTURE"],
     requiredParams: [
-      { id: "noi", name: "Net Operating Income", nameKr: "순영업이익 (NOI)", type: "currency", unit: "억원", description: "임대수익 - 운영비용", ontologyMapping: { object: "Project", property: "noi" } },
+      { id: "noi", name: "Net Operating Income", nameKr: "순영업이익 (NOI)", type: "currency", unit: "억��", description: "임대수익 - 운영비용", ontologyMapping: { object: "Project", property: "noi" } },
       { id: "capRate", name: "Capitalization Rate", nameKr: "환원율 (Cap Rate)", type: "percentage", unit: "%", description: "시장 거래 기준 환원율", defaultValue: 5, min: 2, max: 15 }
     ],
     optionalParams: [
@@ -232,9 +231,9 @@ const VALIDATED_METHODOLOGIES: ValuationMethodology[] = [
   }
 ]
 
-// ════════════════════════════════════════════════════════════════════════════════
+// ════════════════════��═══════════════════════════════════════════════════════════
 // 온톨로지 기반 파라미터
-// ════════════════════════════════════════════════════════════════════════════════
+// ═════════════════════════════════════════════════════════════���══════════════════
 
 interface OntologyParameter {
   id: string
