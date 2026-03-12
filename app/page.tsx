@@ -10,6 +10,8 @@ import { OntologyGraphViewer } from "@/components/ontology-graph-viewer"
 import { OntologyConfigManager } from "@/components/ontology-config-manager"
 import { FeedbackLoopViewer } from "@/components/feedback-loop-viewer"
 import { InvestmentReportDashboard } from "@/components/investment-report-dashboard"
+import { ServiceOfferingDashboard } from "@/components/service-offering-dashboard"
+import { RegulatoryComplianceDashboard } from "@/components/regulatory-compliance-dashboard"
 import { useToast } from "@/hooks/use-toast"
 import { Toaster } from "@/components/ui/toaster"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -64,6 +66,10 @@ export default function Page() {
           {selectedMenu === "연쇄부도 시뮬레이션" && <CascadeDefaultSimulator />}
 
           {selectedMenu === "투자 보고서" && <InvestmentReportDashboard />}
+
+          {selectedMenu === "서비스오퍼링" && <ServiceOfferingDashboard />}
+
+          {selectedMenu === "규제준수" && <RegulatoryComplianceDashboard />}
         </div>
       </div>
 
