@@ -67,10 +67,10 @@ export function generateDefaultQuestionsFromSchema(
     })
   })
 
-  // Generate questions from relationships
-  links.forEach(link => {
+  // Generate questions from relationships - use fromType_toType_name for unique IDs
+  links.forEach((link, index) => {
     questions.push({
-      id: `rel_${link.name}`,
+      id: `rel_${link.fromType}_${link.toType}_${link.name}_${index}`,
       question: `${link.fromType}와 ${link.toType} 간의 ${link.name} 관계를 모델링하시겠습니까?`,
       category: "relationship",
       sourceRelationship: link.name,
